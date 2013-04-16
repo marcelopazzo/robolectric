@@ -225,7 +225,7 @@ public class ViewTest {
         view.setBackgroundResource(R.drawable.an_image);
         view.setBackgroundResource(0);
         assertThat(view.getBackground()).isEqualTo(null);
-        assertThat(shadowOf(view).getBackgroundResourceId()).isEqualTo(0);
+        assertThat(shadowOf(view).getBackgroundResourceId()).isEqualTo(-1);
     }
 
     @Test
@@ -456,20 +456,20 @@ public class ViewTest {
     @Test
     public void test_measuredDimensionCustomView() {
         // View provides its own onMeasure implementation
-        TestView2 view2 = new TestView2(new Activity());
+        TestView2 view2 = new TestView2(new Activity(), 300, 100);
 
-        assertThat(view2.getHeight()).isEqualTo(0);
         assertThat(view2.getWidth()).isEqualTo(0);
-        assertThat(view2.getMeasuredHeight()).isEqualTo(0);
+        assertThat(view2.getHeight()).isEqualTo(0);
         assertThat(view2.getMeasuredWidth()).isEqualTo(0);
+        assertThat(view2.getMeasuredHeight()).isEqualTo(0);
 
-        view2.measure(MeasureSpec.makeMeasureSpec(1000, MeasureSpec.AT_MOST),
-                MeasureSpec.makeMeasureSpec(600, MeasureSpec.AT_MOST));
+        view2.measure(MeasureSpec.makeMeasureSpec(200, MeasureSpec.AT_MOST),
+                MeasureSpec.makeMeasureSpec(50, MeasureSpec.AT_MOST));
 
-        assertThat(view2.getHeight()).isEqualTo(0);
         assertThat(view2.getWidth()).isEqualTo(0);
-        assertThat(view2.getMeasuredHeight()).isEqualTo(400);
-        assertThat(view2.getMeasuredWidth()).isEqualTo(800);
+        assertThat(view2.getHeight()).isEqualTo(0);
+        assertThat(view2.getMeasuredWidth()).isEqualTo(300);
+        assertThat(view2.getMeasuredHeight()).isEqualTo(100);
     }
 
     @Test
@@ -573,7 +573,7 @@ public class ViewTest {
 
     @Test
     public void canAssertThatSuperDotOnLayoutWasCalledFromViewSubclasses() throws Exception {
-        TestView2 view = new TestView2(new Activity());
+        TestView2 view = new TestView2(new Activity(), 1111, 1112);
         assertThat(shadowOf(view).onLayoutWasCalled()).isFalse();
         view.onLayout(true, 1, 2, 3, 4);
         assertThat(shadowOf(view).onLayoutWasCalled()).isTrue();
@@ -644,8 +644,14 @@ public class ViewTest {
     }
 
     private static class TestView2 extends View {
-        public TestView2(Context context) {
+
+        private int minWidth;
+        private int minHeight;
+
+        public TestView2(Context context, int minWidth, int minHeight) {
             super(context);
+            this.minWidth = minWidth;
+            this.minHeight = minHeight;
         }
 
         @Override
@@ -653,9 +659,8 @@ public class ViewTest {
             super.onLayout(changed, l, t, r, b);
         }
 
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            super.onMeasure(800, 400);
+        @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            setMeasuredDimension(minWidth, minHeight);
         }
     }
 

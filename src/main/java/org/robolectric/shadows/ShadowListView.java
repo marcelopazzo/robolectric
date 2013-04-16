@@ -1,10 +1,12 @@
 package org.robolectric.shadows;
 
 import android.view.View;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import org.robolectric.internal.Implements;
 import org.robolectric.internal.RealObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"UnusedDeclaration"})
@@ -132,8 +134,13 @@ public class ShadowListView extends ShadowAbsListView {
 //    }
 
     public List<View> getHeaderViews() {
-        return null;
-//        return headerViews;
+        HeaderViewListAdapter adapter = (HeaderViewListAdapter) realListView.getAdapter();
+        ArrayList<View> headerViews = new ArrayList<View>();
+        int headersCount = adapter.getHeadersCount();
+        for (int i = 0; i < headersCount; i++) {
+            headerViews.add(adapter.getView(i, null, realListView));
+        }
+        return headerViews;
     }
 
 //    public void setHeaderViews(List<View> headerViews) {
@@ -141,8 +148,14 @@ public class ShadowListView extends ShadowAbsListView {
 //    }
 
     public List<View> getFooterViews() {
-        return null;
-//        return footerViews;
+        HeaderViewListAdapter adapter = (HeaderViewListAdapter) realListView.getAdapter();
+        ArrayList<View> footerViews = new ArrayList<View>();
+        int offset = adapter.getHeadersCount() + adapter.getCount() - adapter.getFootersCount();
+        int itemCount = adapter.getCount();
+        for (int i = offset; i < itemCount; i++) {
+            footerViews.add(adapter.getView(i, null, realListView));
+        }
+        return footerViews;
     }
 
     public void populateItems() {

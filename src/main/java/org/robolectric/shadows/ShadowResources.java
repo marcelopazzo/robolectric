@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import org.jetbrains.annotations.NotNull;
 import org.robolectric.Robolectric;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
@@ -104,6 +105,26 @@ public class ShadowResources {
     }
 
     @Implementation
+    public String getResourceName(int resId) throws Resources.NotFoundException {
+        return getResName(resId).getFullyQualifiedName();
+    }
+
+    @Implementation
+    public String getResourcePackageName(int resId) throws Resources.NotFoundException {
+        return getResName(resId).namespace;
+    }
+
+    @Implementation
+    public String getResourceTypeName(int resId) throws Resources.NotFoundException {
+        return getResName(resId).type;
+    }
+
+    @Implementation
+    public String getResourceEntryName(int resId) throws Resources.NotFoundException {
+        return getResName(resId).name;
+    }
+
+    @Implementation
     public int getColor(int id) throws Resources.NotFoundException {
         String colorValue = resourceLoader.getColorValue(getResName(id), getQualifiers());
         if (isEmpty(colorValue)) throw new Resources.NotFoundException(notFound(id));
@@ -114,10 +135,10 @@ public class ShadowResources {
         return s == null || s.length() == 0;
     }
 
-    private ResName getResName(int id) {
+    private @NotNull ResName getResName(int id) {
         ResName resName = resourceLoader.getResourceIndex().getResName(id);
         if (resName == null) {
-            throw new Resources.NotFoundException("couldn't find a name for resource id " + id);
+            throw new Resources.NotFoundException("Unable to find resource ID #0x" + Integer.toHexString(id));
         }
         return resName;
     }

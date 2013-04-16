@@ -40,8 +40,8 @@ import java.util.ArrayList;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.robolectric.Robolectric.shadowOf;
+import static org.robolectric.test.Assertions.assertThat;
 import static org.robolectric.util.TestUtil.TEST_PACKAGE;
 import static org.robolectric.util.TestUtil.assertInstanceOf;
 
@@ -335,6 +335,7 @@ public class LayoutLoaderTest {
         ImageView imageView = (ImageView) mediaView.findViewById(R.id.image);
         ShadowImageView shadowImageView = Robolectric.shadowOf(imageView);
 
+        assertThat(imageView.getBackground()).isResource(R.drawable.image_background);
         assertThat(shadowImageView.getBackgroundResourceId()).isEqualTo(R.drawable.image_background);
     }
 
@@ -364,13 +365,11 @@ public class LayoutLoaderTest {
             button.performClick();
         } catch (IllegalStateException e) {
             exception = e;
-        } finally {
-            assertNotNull(exception);
-            org.junit.Assert.assertThat("The error message should contain the id name of the "
-                    + "faulty button",
-                    exception.getMessage(),
-                    containsString("invalid_onclick_button"));
         }
+        assertNotNull(exception);
+        assertThat(exception.getMessage())
+                .as("The error message should contain the id name of the faulty button")
+                .contains("invalid_onclick_button");
     }
 
     @Test

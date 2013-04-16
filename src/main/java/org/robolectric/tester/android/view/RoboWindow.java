@@ -207,7 +207,7 @@ public class RoboWindow extends Window {
         if (decorView == null) {
             decorView = new FrameLayout(getContext()) {
                 @Override public void requestLayout() {
-                    System.out.println("request window layout!");
+                    System.out.println("[DEBUG] RoboWindow: request window layout!");
                     super.requestLayout();
                 }
             };

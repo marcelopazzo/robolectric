@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -94,6 +95,7 @@ public class ListViewTest {
         listView.addHeaderView(view1);
         listView.addHeaderView(view2, null, false);
         listView.addHeaderView(view3, null, false);
+        listView.setAdapter(new CountingAdapter(2));
         assertThat(listView.getHeaderViewsCount()).isEqualTo(4);
         assertThat(shadowOf(listView).getHeaderViews().get(0)).isSameAs(view0);
         assertThat(shadowOf(listView).getHeaderViews().get(1)).isSameAs(view1);
@@ -116,7 +118,7 @@ public class ListViewTest {
         assertThat(listView.findViewById(42)).isSameAs(view);
     }
 
-    @Test
+    @Test @Ignore("Android doesn't behave this way, at least as of Jelly Bean.")
     public void addFooterView_ShouldThrowIfAdapterIsAlreadySet() throws Exception {
         listView.setAdapter(new CountingAdapter(1));
         try {
@@ -134,6 +136,7 @@ public class ListViewTest {
         View view1 = new View(Robolectric.application);
         listView.addFooterView(view0);
         listView.addFooterView(view1);
+        listView.setAdapter(new CountingAdapter(3));
         assertThat(shadowOf(listView).getFooterViews().get(0)).isSameAs(view0);
         assertThat(shadowOf(listView).getFooterViews().get(1)).isSameAs(view1);
     }
