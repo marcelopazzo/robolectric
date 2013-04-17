@@ -27,6 +27,7 @@ public class DialogTest {
         final Transcript transcript = new Transcript();
 
         final Dialog dialog = new Dialog(Robolectric.application);
+        dialog.show();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInListener) {

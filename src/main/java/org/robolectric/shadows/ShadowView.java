@@ -492,6 +492,7 @@ public class ShadowView {
     @Implementation
     public void setOnTouchListener(View.OnTouchListener onTouchListener) {
         this.onTouchListener = onTouchListener;
+        directly().setOnTouchListener(onTouchListener);
     }
 
 //    @Implementation

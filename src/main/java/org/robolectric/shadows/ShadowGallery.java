@@ -2,13 +2,12 @@ package org.robolectric.shadows;
 
 import android.widget.Gallery;
 import org.robolectric.internal.Implements;
-import org.robolectric.internal.RealObject;
 
 @Implements(value = Gallery.class)
 public class ShadowGallery extends ShadowAbsSpinner {
 
-    @RealObject Gallery gallery;
-
+//    @RealObject Gallery gallery;
+//
 //    @Implementation
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        switch (keyCode) {

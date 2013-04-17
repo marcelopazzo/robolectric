@@ -33,7 +33,6 @@ public class ShadowDialog {
     private int themeId;
     private View inflatedView;
     private boolean hasBeenDismissed;
-    private DialogInterface.OnDismissListener onDismissListener;
     protected CharSequence title;
     private DialogInterface.OnCancelListener onCancelListener;
     private Window window;
