@@ -691,9 +691,10 @@ public class ViewTest {
 
     @Test public void removeAllViews_shouldCallOnAttachedToAndDetachedFromWindow() throws Exception {
         MyView parent = new MyView("parent", transcript);
+        new RoboWindow(application).setContentView(parent);
+
         parent.addView(new MyView("child", transcript));
         parent.addView(new MyView("another child", transcript));
-        new RoboWindow(application).setContentView(parent);
         transcript.clear();
         parent.removeAllViews();
         transcript.assertEventsSoFar("another child detached", "child detached");
