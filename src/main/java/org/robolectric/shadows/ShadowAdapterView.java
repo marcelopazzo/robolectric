@@ -121,13 +121,12 @@ public class ShadowAdapterView extends ShadowViewGroup {
     /**
      * Check if our adapter's items have changed without {@code onChanged()} or {@code onInvalidated()} having been called.
      *
+     * @deprecated No longer supported.
      * @return true if the object is valid, false if not
      * @throws RuntimeException if the items have been changed without notification
      */
     public boolean checkValidity() {
-        throw new RuntimeException();
-//        update();
-//        return valid;
+        throw new UnsupportedOperationException();
     }
 
 //    /**
@@ -149,6 +148,7 @@ public class ShadowAdapterView extends ShadowViewGroup {
      * set it back to true at the end of your test to avoid test pollution.
      *
      * @param shouldUpdate false to turn off the feature, true to turn it back on
+     * @deprecated Not supported as of Robolectric 2.0-alpha-3.
      */
     public static void automaticallyUpdateRowViews(boolean shouldUpdate) {
         automaticallyUpdateRowViews = shouldUpdate;
@@ -280,6 +280,11 @@ public class ShadowAdapterView extends ShadowViewGroup {
             throw new IllegalArgumentException("No item found containing text \"" + targetText + "\"");
         }
         performItemClick(itemIndex);
+    }
+
+    public void populateItems() {
+        realView.measure(0, 0);
+        realView.layout(0, 0, 100, 10000);
     }
 
 //    @Implementation

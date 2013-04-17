@@ -13,6 +13,7 @@ import org.robolectric.TestRunners;
 import org.robolectric.util.Transcript;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.robolectric.Robolectric.shadowOf;
 
 @RunWith(TestRunners.WithDefaults.class)
 abstract public class AdapterViewBehavior {
@@ -53,7 +54,7 @@ abstract public class AdapterViewBehavior {
         assertThat(adapterView.getCount()).isEqualTo(2);
         assertThat(adapterView.getChildCount()).isEqualTo(0);
 
-        ShadowHandler.idleMainLooper();
+        shadowOf(adapterView).populateItems();
         assertThat(adapterView.getChildCount()).isEqualTo(2);
         assertThat(((TextView) adapterView.getChildAt(0)).getText()).isEqualTo("Item 0");
         assertThat(((TextView) adapterView.getChildAt(1)).getText()).isEqualTo("Item 1");

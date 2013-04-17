@@ -235,7 +235,7 @@ public class ListViewTest {
         adapterFileList.add("Item 3");
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(application, android.R.layout.simple_list_item_1, adapterFileList);
         listView.setAdapter(adapter);
-        ShadowHandler.idleMainLooper();
+        shadowOf(listView).populateItems();
         ShadowListView shadowListView = shadowOf(listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -253,13 +253,13 @@ public class ListViewTest {
         shadowListView.clickFirstItemContainingText("Non-existant item");
     }
 
-    @Test
+    @Test @Ignore("Old safety checks, no longer supported.")
     public void revalidate_whenItemsHaveNotChanged_shouldWork() throws Exception {
         prepareWithListAdapter();
         shadowOf(listView).checkValidity();
     }
 
-    @Test
+    @Test @Ignore("Old safety checks, no longer supported.")
     public void revalidate_removingAnItemWithoutInvalidating_shouldExplode() throws Exception {
         ListAdapter adapter = prepareWithListAdapter();
         adapter.items.remove(0);
@@ -271,7 +271,7 @@ public class ListViewTest {
         }
     }
 
-    @Test
+    @Test @Ignore("Old safety checks, no longer supported.")
     public void revalidate_addingAnItemWithoutInvalidating_shouldExplode() throws Exception {
         ListAdapter adapter = prepareWithListAdapter();
         adapter.items.add("x");
@@ -283,7 +283,7 @@ public class ListViewTest {
         }
     }
 
-    @Test
+    @Test @Ignore("Old safety checks, no longer supported.")
     public void revalidate_changingAnItemWithoutInvalidating_shouldExplode() throws Exception {
         ListAdapter adapter = prepareWithListAdapter();
         adapter.items.remove(2);
@@ -296,7 +296,7 @@ public class ListViewTest {
         }
     }
 
-    @Test
+    @Test @Ignore("Not supported as of Robolectric 2.0-alpha3.")
     public void testShouldBeAbleToTurnOffAutomaticRowUpdates() throws Exception {
         try {
             TranscriptAdapter adapter1 = new TranscriptAdapter();
@@ -351,7 +351,7 @@ public class ListViewTest {
         assertThat(listView.getPositionForView(view)).isEqualTo(AdapterView.INVALID_POSITION);
     }
 
-    @Test
+    @Test @Ignore("Old safety checks, no longer supported.")
     public void revalidate_withALazyAdapterShouldWork() {
         ListAdapter lazyAdapter = new ListAdapter() {
             List<String> lazyItems = Arrays.asList("a", "b", "c");

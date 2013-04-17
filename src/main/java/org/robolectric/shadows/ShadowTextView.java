@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import org.robolectric.internal.HiddenApi;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
 import org.robolectric.internal.RealObject;
@@ -597,7 +598,7 @@ public class ShadowTextView extends ShadowView {
         this.layout = layout;
     }
 
-    @Implementation
+    @HiddenApi @Implementation
     public Locale getTextServicesLocale() {
         return Locale.getDefault();
     }

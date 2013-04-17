@@ -2,6 +2,7 @@ package org.robolectric.shadows;
 
 import android.os.Looper;
 import org.robolectric.Robolectric;
+import org.robolectric.internal.HiddenApi;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
 import org.robolectric.internal.RealObject;
@@ -99,12 +100,12 @@ public class ShadowLooper {
         return myThread;
     }
 
-    @Implementation
+    @HiddenApi @Implementation
     public int postSyncBarrier() {
         return 1;
     }
 
-    @Implementation
+    @HiddenApi @Implementation
     public void removeSyncBarrier(int token) {
     }
 

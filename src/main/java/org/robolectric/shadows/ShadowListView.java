@@ -158,12 +158,7 @@ public class ShadowListView extends ShadowAbsListView {
         return footerViews;
     }
 
-    public void populateItems() {
-        realListView.measure(0, 0);
-        realListView.layout(0, 0, 100, 10000);
-    }
-
-//    public void setFooterViews(List<View> footerViews) {
+    //    public void setFooterViews(List<View> footerViews) {
 //        this.footerViews = footerViews;
 //    }
 //
