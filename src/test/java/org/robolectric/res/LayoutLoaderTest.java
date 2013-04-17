@@ -269,7 +269,7 @@ public class LayoutLoaderTest {
     @Test
     public void testMapView() throws Exception {
         RelativeLayout mainView = (RelativeLayout) inflate("mapview");
-        TestUtil.assertInstanceOf(MapView.class, mainView.findViewById(R.id.map_view));
+        assertThat(mainView.findViewById(R.id.map_view)).isInstanceOf(MapView.class);
     }
 
     @Test

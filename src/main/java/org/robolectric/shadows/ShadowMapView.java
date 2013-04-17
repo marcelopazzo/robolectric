@@ -1,7 +1,11 @@
 package org.robolectric.shadows;
 
+import android.content.Context;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ZoomButtonsController;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapController;
@@ -11,18 +15,21 @@ import com.google.android.maps.Projection;
 import org.robolectric.Robolectric;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
+import org.robolectric.res.Attribute;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.fest.reflect.core.Reflection.field;
 import static org.robolectric.RobolectricForMaps.shadowOf;
+import static org.robolectric.bytecode.RobolectricInternals.getConstructor;
 
 /**
  * Shadow of {@code MapView} that simulates the internal state of a {@code MapView}. Supports {@code Projection}s,
  * {@code Overlay}s, and {@code TouchEvent}s
  */
 @SuppressWarnings({"UnusedDeclaration"})
-@Implements(value = MapView.class)
+@Implements(value = MapView.class, callThroughByDefault = false)
 public class ShadowMapView extends ShadowViewGroup {
     private boolean satelliteOn;
     private MapController mapController;
@@ -45,6 +52,34 @@ public class ShadowMapView extends ShadowViewGroup {
     public ShadowMapView(MapView mapView) {
         realMapView = mapView;
         zoomButtonsController = new ZoomButtonsController(mapView);
+    }
+
+    public void __constructor__(Context context) {
+        field("mContext").ofType(Context.class).in(realView).set(context);
+        this.attributeSet = new RoboAttributeSet(new ArrayList<Attribute>(), null, null);
+        getConstructor(View.class, realView, Context.class)
+                .invoke(context);
+        getConstructor(ViewGroup.class, realView, Context.class)
+                .invoke(context);
+    }
+
+    public void __constructor__(Context context, AttributeSet attributeSet) {
+        field("mContext").ofType(Context.class).in(realView).set(context);
+        this.attributeSet = attributeSet;
+        getConstructor(View.class, realView, Context.class, AttributeSet.class, int.class)
+                .invoke(context, attributeSet, 0);
+        getConstructor(ViewGroup.class, realView, Context.class, AttributeSet.class, int.class)
+                .invoke(context, attributeSet, 0);
+    }
+
+    @Override public void __constructor__(Context context, AttributeSet attributeSet, int defStyle) {
+        field("mContext").ofType(Context.class).in(realView).set(context);
+        this.attributeSet = attributeSet;
+        getConstructor(View.class, realView, Context.class, AttributeSet.class, int.class)
+                .invoke(context, attributeSet, defStyle);
+        getConstructor(ViewGroup.class, realView, Context.class, AttributeSet.class, int.class)
+                .invoke(context, attributeSet, defStyle);
+        super.__constructor__(context, attributeSet, defStyle);
     }
 
     public static int toE6(double d) {
