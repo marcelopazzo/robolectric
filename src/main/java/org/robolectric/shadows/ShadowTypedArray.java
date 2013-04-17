@@ -98,8 +98,7 @@ public class ShadowTypedArray implements UsesResources {
         ResName resName = getResName(index);
         if (resName == null) return defValue;
         String value = values.getAttributeValue(resName.namespace, resName.name);
-        if (isEmpty(value)) return defValue;
-        if (isReference(value)) {
+        if (value == null || isReference(value)) {
             int attributeResourceValue = values.getAttributeResourceValue(resName.namespace, resName.name, -1);
             if (attributeResourceValue != -1) {
                 return resources.getColor(attributeResourceValue);
@@ -116,8 +115,7 @@ public class ShadowTypedArray implements UsesResources {
         ResName resName = getResName(index);
         if (resName == null) return null;
         String value = values.getAttributeValue(resName.namespace, resName.name);
-        if (isEmpty(value)) return null;
-        if (isReference(value)) {
+        if (value == null || isReference(value)) {
             int attributeResourceValue = values.getAttributeResourceValue(resName.namespace, resName.name, -1);
             if (attributeResourceValue != -1) {
                 return resources.getColorStateList(attributeResourceValue);
@@ -186,9 +184,10 @@ public class ShadowTypedArray implements UsesResources {
 
     @Implementation
     public boolean hasValue(int index) {
-        // todo ResName resName = getResName(index);
-        //String attributeValue = values.getAttributeValue(getResName(index).namespace, getResName(index).name);
-        return true;
+        ResName resName = getResName(index);
+        if (resName == null) return false;
+        String str = values.getAttributeValue(resName.namespace, resName.name);
+        return str != null;
     }
 
     @Implementation
@@ -229,10 +228,6 @@ public class ShadowTypedArray implements UsesResources {
         Integer[] integers = new Integer[ints.length];
         for (int i = 0; i < ints.length; i++) integers[i] = ints[i];
         return integers;
-    }
-
-    private boolean isEmpty(String value) {
-        return value == null || value.length() == 0;
     }
 
     private boolean isReference(String value) {

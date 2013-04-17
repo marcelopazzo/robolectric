@@ -2,6 +2,7 @@ package org.robolectric.shadows;
 
 import android.util.AttributeSet;
 import android.view.View;
+import org.jetbrains.annotations.NotNull;
 import org.robolectric.res.Attribute;
 import org.robolectric.res.ResName;
 import org.robolectric.res.ResourceIndex;
@@ -104,17 +105,26 @@ public class RoboAttributeSet implements AttributeSet {
 
     @Override
     public String getAttributeValue(String namespace, String attribute) {
-        Attribute attr = findByName(namespace, attribute);
-        return (attr != null) ? attr.value : null;
+        return dereference(findByName(namespace, attribute));
     }
 
     @Override
     public String getAttributeValue(int index) {
         try {
-            return attributes.get(index).value;
+            return dereference(attributes.get(index));
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    private String dereference(Attribute attr) {
+        String value = (attr != null) ? attr.value : null;
+        while (value != null && isReference(value)) {
+            if ("@null".equals(value)) return null;
+            ResName resName = new ResName(ResName.qualifyResourceName(value.substring(1), attr.contextPackageName));
+            value = resourceLoader.getStringValue(resName, ""); // todo: qualifiers are missing here!
+        }
+        return value;
     }
 
     @Override
@@ -245,5 +255,9 @@ public class RoboAttributeSet implements AttributeSet {
         } else {
             return Attribute.find(attributes, resourceId, resourceIndex);
         }
+    }
+
+    private boolean isReference(@NotNull String value) {
+        return value.startsWith("@");
     }
 }

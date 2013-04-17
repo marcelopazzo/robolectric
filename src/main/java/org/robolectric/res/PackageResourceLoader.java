@@ -60,4 +60,8 @@ public class PackageResourceLoader extends XResourceLoader {
                 "resourcePath=" + resourcePath +
                 '}';
     }
+
+    @Override public boolean providesFor(String namespace) {
+        return resourcePath.getPackageName().equals(namespace);
+    }
 }

@@ -124,9 +124,21 @@ public class RoboAttributeSetTest {
     }
 
     @Test
+    public void getAttributeValue_byNameWithReference_shouldReturnValueFromAttribute() throws Exception {
+        createTestAttributeSet(new Attribute(TEST_PACKAGE + ":attr/isSugary", "@string/ok", TEST_PACKAGE));
+        assertThat(roboAttributeSet.getAttributeValue(TEST_PACKAGE, "isSugary")).isEqualTo("ok yup!");
+    }
+
+    @Test
     public void getAttributeValue_byId_shouldReturnValueFromAttribute() throws Exception {
         createTestAttributeSet(new Attribute(TEST_PACKAGE + ":attr/isSugary", "oh heck yeah", TEST_PACKAGE));
         assertThat(roboAttributeSet.getAttributeValue(0)).isEqualTo("oh heck yeah");
+    }
+
+    @Test
+    public void getAttributeValue_byIdWithReference_shouldReturnValueFromAttribute() throws Exception {
+        createTestAttributeSet(new Attribute(TEST_PACKAGE + ":attr/isSugary", "@string/ok", TEST_PACKAGE));
+        assertThat(roboAttributeSet.getAttributeValue(0)).isEqualTo("ok yup!");
     }
 
     @Test

@@ -43,4 +43,6 @@ public interface ResourceLoader {
     boolean hasAttributeFor(Class<? extends View> viewClass, String namespace, String attribute);
 
     String convertValueToEnum(Class<? extends View> viewClass, String namespace, String attribute, String part);
+
+    boolean providesFor(String namespace);
 }

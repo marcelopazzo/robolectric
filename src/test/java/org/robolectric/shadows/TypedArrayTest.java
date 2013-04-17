@@ -14,6 +14,8 @@ import org.robolectric.TestRunners;
 import org.robolectric.res.Attribute;
 import org.robolectric.util.TestUtil;
 
+import java.util.Arrays;
+
 import static java.util.Arrays.asList;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -92,6 +94,31 @@ public class TypedArrayTest {
                 ), shadowOf(resources).getResourceLoader(), null);
         TypedArray typedArray = ShadowTypedArray.create(resources, attributeSet, new int[]{R.attr.items});
         assertThat(typedArray.getTextArray(0)).containsExactly("hola", "Hello");
+    }
+
+    @Test public void hasValue_withValue() throws Exception {
+        Resources resources = Robolectric.application.getResources();
+        RoboAttributeSet attributeSet = new RoboAttributeSet(
+                asList(new Attribute(TestUtil.TEST_PACKAGE + ":attr/items", "@string/ok", TestUtil.TEST_PACKAGE)
+                ), shadowOf(resources).getResourceLoader(), null);
+        TypedArray typedArray = ShadowTypedArray.create(resources, attributeSet, new int[]{R.attr.items});
+        assertThat(typedArray.hasValue(0)).isTrue();
+    }
+
+    @Test public void hasValue_withoutValue() throws Exception {
+        Resources resources = Robolectric.application.getResources();
+        RoboAttributeSet attributeSet = new RoboAttributeSet(Arrays.<Attribute>asList(), shadowOf(resources).getResourceLoader(), null);
+        TypedArray typedArray = ShadowTypedArray.create(resources, attributeSet, new int[]{R.attr.items});
+        assertThat(typedArray.hasValue(0)).isFalse();
+    }
+
+    @Test public void hasValue_withNullValue() throws Exception {
+        Resources resources = Robolectric.application.getResources();
+        RoboAttributeSet attributeSet = new RoboAttributeSet(
+                asList(new Attribute(TestUtil.TEST_PACKAGE + ":attr/items", "@null", TestUtil.TEST_PACKAGE)
+                ), shadowOf(resources).getResourceLoader(), null);
+        TypedArray typedArray = ShadowTypedArray.create(resources, attributeSet, new int[]{R.attr.items});
+        assertThat(typedArray.hasValue(0)).isFalse();
     }
 
     @Test public void shouldEnumeratePresentValues() throws Exception {
