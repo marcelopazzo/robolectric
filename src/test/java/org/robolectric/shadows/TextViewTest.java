@@ -18,6 +18,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import org.junit.Before;
@@ -349,8 +350,10 @@ public class TextViewTest {
     @Test
     public void onTouchEvent_shouldCallMovementMethodOnTouchEventWithSetMotionEvent() throws Exception {
         TestMovementMethod testMovementMethod = new TestMovementMethod();
-
         textView.setMovementMethod(testMovementMethod);
+        textView.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+        textView.measure(100, 100);
+
         MotionEvent event = MotionEvent.obtain(0, 0, 0, 0, 0, 0);
         textView.dispatchTouchEvent(event);
 
@@ -425,6 +428,7 @@ public class TextViewTest {
 
     @Test
     public void setLines_setsTheLines() throws Exception {
+        textView.measure(100, 100);
         textView.setLines(1);
         assertThat(textView.getLineCount()).isEqualTo(1);
         textView.setLines(4);

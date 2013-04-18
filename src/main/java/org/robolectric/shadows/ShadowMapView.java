@@ -246,6 +246,10 @@ public class ShadowMapView extends ShadowViewGroup {
         preLoadWasCalled = true;
     }
 
+    @Implementation
+    public void onLayout(boolean b, int i, int i1, int i2, int i3) {
+    }
+
     private void moveByPixels(int x, int y) {
         Point center = getProjection().toPixels(mapCenter, null);
         center.offset(x, y);

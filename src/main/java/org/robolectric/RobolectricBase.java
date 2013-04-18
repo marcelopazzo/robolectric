@@ -241,7 +241,6 @@ import org.robolectric.shadows.ShadowViewAnimator;
 import org.robolectric.shadows.ShadowViewConfiguration;
 import org.robolectric.shadows.ShadowViewFlipper;
 import org.robolectric.shadows.ShadowViewGroup;
-import org.robolectric.shadows.ShadowViewStub;
 import org.robolectric.shadows.ShadowViewTreeObserver;
 import org.robolectric.shadows.ShadowWebSyncManager;
 import org.robolectric.shadows.ShadowWebView;
@@ -519,7 +518,6 @@ public class RobolectricBase {
             ShadowViewGroup.class,
             ShadowViewFlipper.class,
             ShadowView.ShadowMeasureSpec.class,
-            ShadowViewStub.class,
             ShadowViewTreeObserver.class,
             ShadowWebView.class,
             ShadowWebViewDatabase.class,

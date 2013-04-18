@@ -148,6 +148,12 @@ public class ShadowAlertDialog extends ShadowDialog {
      * @return the items that are available to be clicked on
      */
     public CharSequence[] getItems() {
+        Adapter adapter = getShadowAlertController().getAdapter();
+        int count = adapter.getCount();
+        CharSequence[] items = new CharSequence[count];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = (CharSequence) adapter.getItem(i);
+        }
         return items;
     }
 

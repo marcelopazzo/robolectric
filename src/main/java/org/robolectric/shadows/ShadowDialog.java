@@ -17,6 +17,7 @@ import org.robolectric.tester.android.view.RoboWindow;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.fest.reflect.core.Reflection.field;
 import static org.fest.reflect.core.Reflection.method;
 import static org.robolectric.Robolectric.directlyOn;
 import static org.robolectric.Robolectric.shadowOf;
@@ -37,7 +38,7 @@ public class ShadowDialog {
     private DialogInterface.OnCancelListener onCancelListener;
     private Window window;
     private Activity ownerActivity;
-    private boolean isCancelable = true;
+//    private boolean isCancelable = true;
     private boolean hasShownBefore;
     private static final ArrayList<Dialog> shownDialogs = new ArrayList<Dialog>();
     private boolean isCancelableOnTouchOutside;
@@ -135,11 +136,13 @@ public class ShadowDialog {
 //    public boolean isShowing() {
 //        return isShowing;
 //    }
-//
-//    @Implementation
-//    public void dismiss() {
+
+    @Implementation
+    public void dismiss() {
+        directlyOn(realDialog, Dialog.class).dismiss();
+        hasBeenDismissed = true;
+    }
 //        isShowing = false;
-//        hasBeenDismissed = true;
 //
 //        if (onDismissListener != null) {
 //            DialogInterface.OnDismissListener onDismissListener = this.onDismissListener;
@@ -172,14 +175,15 @@ public class ShadowDialog {
 //    public void setCancelable(boolean flag) {
 //        isCancelable = flag;
 //    }
-//
-//    @Implementation
-//    public void setCanceledOnTouchOutside(boolean flag) {
-//        isCancelableOnTouchOutside = flag;
-//    }
+
+    @Implementation
+    public void setCanceledOnTouchOutside(boolean flag) {
+        isCancelableOnTouchOutside = flag;
+        directlyOn(realDialog, Dialog.class).setCanceledOnTouchOutside(flag);
+    }
 
     public boolean isCancelable() {
-        return isCancelable;
+        return field("mCancelable").ofType(boolean.class).in(realDialog).get();
     }
 
     public boolean isCancelableOnTouchOutside() {
