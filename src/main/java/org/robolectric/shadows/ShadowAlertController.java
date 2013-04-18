@@ -1,6 +1,8 @@
 package org.robolectric.shadows;
 
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ListView;
 import org.robolectric.Robolectric;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
@@ -8,6 +10,7 @@ import org.robolectric.internal.RealObject;
 
 import java.lang.reflect.InvocationTargetException;
 
+import static org.fest.reflect.core.Reflection.method;
 import static org.robolectric.Robolectric.directlyOn;
 
 @Implements(value = Robolectric.Anything.class, className = ShadowAlertController.ALERT_CONTROLLER_CLASS_NAME)
@@ -62,5 +65,13 @@ public class ShadowAlertController {
 
     public View getView() {
         return view;
+    }
+
+    public Adapter getAdapter() {
+        return method("getListView")
+                .withReturnType(ListView.class)
+                .in(realAlertController)
+                .invoke()
+                .getAdapter();
     }
 }

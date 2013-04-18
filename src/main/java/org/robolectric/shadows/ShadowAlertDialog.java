@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.FrameLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import org.robolectric.Robolectric;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
@@ -29,9 +27,6 @@ public class ShadowAlertDialog extends ShadowDialog {
     private DialogInterface.OnMultiChoiceClickListener multiChoiceClickListener;
 //    private boolean[] checkedItems;
 //    private int checkedItemIndex;
-    private View view;
-    private ListAdapter adapter;
-    private ListView listView;
     private FrameLayout custom;
 
     /**
@@ -157,7 +152,7 @@ public class ShadowAlertDialog extends ShadowDialog {
     }
 
     public Adapter getAdapter() {
-        return adapter;
+        return getShadowAlertController().getAdapter();
     }
 
     /**
